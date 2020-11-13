@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.travelu21">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="TravelU2"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <activity android:name=".vercuentaservicio"></activity>
+        <activity android:name=".vercuenta" />
+        <activity android:name=".crearpresupuesto" />
+        <activity android:name=".verpresupuestos" />
+        <activity android:name=".busqueda_restaurante" />
+        <activity android:name=".busqueda_hotel" />
+        <activity android:name=".opciones_servicio" />
+        <activity android:name=".opciones_viajero" />
+        <activity android:name=".restaurante" />
+        <activity android:name=".hotel" />
+        <activity android:name=".reservas_viajero" />
+        <activity android:name=".reservas_servicio" />
+        <activity android:name=".opreg2" />
+        <activity android:name=".opreg1" />
+        <activity android:name=".main_servicio" />
+        <activity android:name=".main_viajeros" />
+        <activity android:name=".registron" />
+        <activity android:name=".registroc" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
