@@ -26,7 +26,7 @@ public class verpresupuestos extends AppCompatActivity {
     //Se instancian los elementos necesarios de forma global
     RecyclerView recyclerView;
     Adapter_Presupuesto adapterPresupuesto;
-
+    String tipo;
     //Array que permite guardar los datos que serán pasados al adaptador
     ArrayList<String[]> items;
 
@@ -47,6 +47,21 @@ public class verpresupuestos extends AppCompatActivity {
         basededatos = new Basededatos();
         items = new ArrayList<>();
         String len = Integer.toString(items.size());
+        try{
+            Bundle extras = getIntent().getExtras();
+            if (extras!=null){
+                tipo = extras.getString("tipo");
+            } else {
+                tipo = "0";
+            }
+        } catch (Exception e){
+            Bundle extras = getIntent().getExtras();
+            if (extras!=null){
+                tipo = extras.getString("tipoh");
+            } else {
+                tipo = "0";
+            }
+        }
 
         //Se llena el árbol con los datos correspondientes
         recuperarP();
@@ -93,7 +108,7 @@ public class verpresupuestos extends AppCompatActivity {
                         basededatos.ActualizarP(uid,usercu);
 
                         //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
-                        String[] parts = new String[8];
+                        String[] parts = new String[9];
                         parts[0] = usercu.des;
                         parts[1] = usercu.fecha;
                         parts[2] = uid;
@@ -102,6 +117,7 @@ public class verpresupuestos extends AppCompatActivity {
                         parts[5] = usercu.des;
                         parts[6] = usercu.com;
                         parts[7] = usercu.ho;
+                        parts[8] = tipo;
 
                         items.add(parts);
                     }

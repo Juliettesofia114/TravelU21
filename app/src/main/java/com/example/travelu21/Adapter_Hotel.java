@@ -86,7 +86,6 @@ public class Adapter_Hotel extends RecyclerView.Adapter<Adapter_Hotel.ViewHolder
         holder.precio.setText("precio por noche: "+precio);
 
         //Se le da una función al botón de reserva
-        //Se le da una función al botón de reserva
         holder.reservar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override

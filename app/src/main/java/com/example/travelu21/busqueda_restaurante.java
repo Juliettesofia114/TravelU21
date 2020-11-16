@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -31,6 +33,7 @@ public class busqueda_restaurante extends AppCompatActivity implements AdapterVi
     RecyclerView recyclerView;
     Adapter_Restaurante adapterRes;
     Button filtro;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     //Array que permite guardar los datos que serán pasados al adaptador
     ArrayList<String[]> items;
@@ -48,6 +51,7 @@ public class busqueda_restaurante extends AppCompatActivity implements AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busqueda_restaurante);
+        String uid = user.getUid();
 
         //Se inicializan los objetos instanciados previamente
         recyclerView = findViewById(R.id.cycler);
@@ -65,12 +69,14 @@ public class busqueda_restaurante extends AppCompatActivity implements AdapterVi
         //Se le asignan funciones al spinner en caso de que se seleccione un elemento de la lista
         dropdown.setOnItemSelectedListener(this);
 
+
         //Se le asigna una función al botón de la interfaz gráfica
         filtro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Se envía al usuario a la actividad donde se muestran los presupuestos disponibles
-                Intent i = new Intent(busqueda_restaurante.this, verpresupuestos.class);
+                Intent i = new Intent(busqueda_restaurante.this,verpresupuestos.class);
+                i.putExtra("tipo","restaurante");
                 startActivity(i);
             }
         });
@@ -81,6 +87,7 @@ public class busqueda_restaurante extends AppCompatActivity implements AdapterVi
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void recuperarR(int position) {
+
         FileInputStream fileInputStream = null;
         try {
             //Se abre el archivo donde se guardan los hoteles registrados
@@ -109,97 +116,204 @@ public class busqueda_restaurante extends AppCompatActivity implements AdapterVi
                     //Se añade el nuevo objeto al árbol correpondiente
                     basededatos.rRestaurante(user);
 
-                    //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
-                    String[] parts = new String[7];
-                    parts[0] = user.nombreEmpresa;
-                    parts[1] = user.ubicacion;
-                    parts[2] = Integer.toString(user.max);
-                    parts[3] = user.correo;
-                    parts[4] = user.horario;
-                    parts[5] = user.id;
-                    parts[6] = user.tipor;
+                    //Se traen los datos provenientes de búsqueda en caso de que provenga del layout de búsqueda
+                    Bundle extras = getIntent().getExtras();
+                    if (extras!= null) {
+                        String total = extras.getString("total");
+                        String per = extras.getString("personas");
+                        String des = extras.getString("destino");
+                        String com = extras.getString("comida");
+                        assert per != null;
+                        assert des != null;
+                        if (des.equals(user.ubicacion)){
+                            //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
+                            String[] parts = new String[7];
+                            parts[0] = user.nombreEmpresa;
+                            parts[1] = user.ubicacion;
+                            parts[2] = Integer.toString(user.max);
+                            parts[3] = user.correo;
+                            parts[4] = user.horario;
+                            parts[5] = user.id;
+                            parts[6] = user.tipor;
 
-                    //Condicional que revisa si está aplicado algún orden de búsqueda
-                    if (position == 0){
-                        //Se añade el arreglo al arreglo que se pasará como parámetro al adaptador
-                        items.add(parts);
-
-                    } else if(position ==2){
-                        int count = 0;
-                        boolean in = false;
-                        if(items.isEmpty()){
-                            items.add(parts);
-                        } else {
-
-                            //Se itera en los elementos del arreglo que será pasada al adaptador
-                            for (int i = 0; i<items.size();i++) {
-
-                                //Si el objeto que ingresa tiene precio menor al de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
-                                if (Integer.parseInt(items.get(i)[2]) < user.max) {
-                                    items.add(count, parts);
-                                    in = true;
-                                    break;
-                                }
-                                count++;
-                            }
-
-                            //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
-                            if (!in) {
+                            //Condicional que revisa si está aplicado algún orden de búsqueda
+                            if (position == 0){
+                                //Se añade el arreglo al arreglo que se pasará como parámetro al adaptador
                                 items.add(parts);
+
+                            } else if(position ==2){
+                                int count = 0;
+                                boolean in = false;
+                                if(items.isEmpty()){
+                                    items.add(parts);
+                                } else {
+
+                                    //Se itera en los elementos del arreglo que será pasada al adaptador
+                                    for (int i = 0; i<items.size();i++) {
+
+                                        //Si el objeto que ingresa tiene precio menor al de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                        if (Integer.parseInt(items.get(i)[2]) < user.max) {
+                                            items.add(count, parts);
+                                            in = true;
+                                            break;
+                                        }
+                                        count++;
+                                    }
+
+                                    //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                    if (!in) {
+                                        items.add(parts);
+                                    }
+                                }
+                            } else if(position ==1){
+                                int count = 0;
+                                boolean in = false;
+                                if(items.isEmpty()){
+                                    items.add(parts);
+                                } else {
+
+                                    //Se itera en los elementos del arreglo que será pasada al adaptador
+                                    for (int i = 0; i<items.size();i++) {
+
+                                        //Si el objeto que ingresa tiene un nombre con un primer caracter menor al primero de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                        int num = user.nombreEmpresa.charAt(0);
+                                        int mu1 = items.get(i)[0].charAt(0);
+                                        if (num<=mu1){
+                                            items.add(count,parts);
+                                            in = true;
+                                            break;
+                                        }
+                                        count++;
+                                    }
+
+                                    //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                    if (!in) {
+                                        items.add(parts);
+                                    }
+                                }
+                            } else if(position==3){
+                                int count = 0;
+                                boolean in = false;
+
+                                //Si la lista está vacía o el tipo de restaurante es igual a null
+                                if(items.isEmpty() || user.tipor==null){
+                                    items.add(parts);
+                                } else {
+
+                                    //Se itera en los elementos del arreglo que será pasada al adaptador
+                                    for (int i = 0; i<items.size();i++) {
+
+                                        //Si el objeto que ingresa tiene un tipo con un primer caracter menor al primero de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                        int num = user.tipor.charAt(0);
+                                        int mu1 = items.get(i)[6].charAt(0);
+                                        if (num<=mu1){
+                                            items.add(count,parts);
+                                            in = true;
+                                            break;
+                                        }
+                                        count++;
+                                    }
+
+                                    //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                    if (!in) {
+                                        items.add(parts);
+                                    }
+                                }
                             }
                         }
-                    } else if(position ==1){
-                        int count = 0;
-                        boolean in = false;
-                        if(items.isEmpty()){
+                    } else {
+                        //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
+                        String[] parts = new String[7];
+                        parts[0] = user.nombreEmpresa;
+                        parts[1] = user.ubicacion;
+                        parts[2] = Integer.toString(user.max);
+                        parts[3] = user.correo;
+                        parts[4] = user.horario;
+                        parts[5] = user.id;
+                        parts[6] = user.tipor;
+
+                        //Condicional que revisa si está aplicado algún orden de búsqueda
+                        if (position == 0){
+                            //Se añade el arreglo al arreglo que se pasará como parámetro al adaptador
                             items.add(parts);
-                        } else {
 
-                            //Se itera en los elementos del arreglo que será pasada al adaptador
-                            for (int i = 0; i<items.size();i++) {
-
-                                //Si el objeto que ingresa tiene un nombre con un primer caracter menor al primero de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
-                                int num = user.nombreEmpresa.charAt(0);
-                                int mu1 = items.get(i)[0].charAt(0);
-                                if (num<=mu1){
-                                    items.add(count,parts);
-                                    in = true;
-                                    break;
-                                }
-                                count++;
-                            }
-
-                            //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
-                            if (!in) {
+                        } else if(position ==2){
+                            int count = 0;
+                            boolean in = false;
+                            if(items.isEmpty()){
                                 items.add(parts);
-                            }
-                        }
-                    } else if(position==3){
-                        int count = 0;
-                        boolean in = false;
+                            } else {
 
-                        //Si la lista está vacía o el tipo de restaurante es igual a null
-                        if(items.isEmpty() || user.tipor==null){
-                            items.add(parts);
-                        } else {
+                                //Se itera en los elementos del arreglo que será pasada al adaptador
+                                for (int i = 0; i<items.size();i++) {
 
-                            //Se itera en los elementos del arreglo que será pasada al adaptador
-                            for (int i = 0; i<items.size();i++) {
-
-                                //Si el objeto que ingresa tiene un tipo con un primer caracter menor al primero de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
-                                int num = user.tipor.charAt(0);
-                                int mu1 = items.get(i)[6].charAt(0);
-                                if (num<=mu1){
-                                    items.add(count,parts);
-                                    in = true;
-                                    break;
+                                    //Si el objeto que ingresa tiene precio menor al de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                    if (Integer.parseInt(items.get(i)[2]) < user.max) {
+                                        items.add(count, parts);
+                                        in = true;
+                                        break;
+                                    }
+                                    count++;
                                 }
-                                count++;
-                            }
 
-                            //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
-                            if (!in) {
+                                //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                if (!in) {
+                                    items.add(parts);
+                                }
+                            }
+                        } else if(position ==1){
+                            int count = 0;
+                            boolean in = false;
+                            if(items.isEmpty()){
                                 items.add(parts);
+                            } else {
+
+                                //Se itera en los elementos del arreglo que será pasada al adaptador
+                                for (int i = 0; i<items.size();i++) {
+
+                                    //Si el objeto que ingresa tiene un nombre con un primer caracter menor al primero de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                    int num = user.nombreEmpresa.charAt(0);
+                                    int mu1 = items.get(i)[0].charAt(0);
+                                    if (num<=mu1){
+                                        items.add(count,parts);
+                                        in = true;
+                                        break;
+                                    }
+                                    count++;
+                                }
+
+                                //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                if (!in) {
+                                    items.add(parts);
+                                }
+                            }
+                        } else if(position==3){
+                            int count = 0;
+                            boolean in = false;
+
+                            //Si la lista está vacía o el tipo de restaurante es igual a null
+                            if(items.isEmpty() || user.tipor==null){
+                                items.add(parts);
+                            } else {
+
+                                //Se itera en los elementos del arreglo que será pasada al adaptador
+                                for (int i = 0; i<items.size();i++) {
+
+                                    //Si el objeto que ingresa tiene un tipo con un primer caracter menor al primero de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                    int num = user.tipor.charAt(0);
+                                    int mu1 = items.get(i)[6].charAt(0);
+                                    if (num<=mu1){
+                                        items.add(count,parts);
+                                        in = true;
+                                        break;
+                                    }
+                                    count++;
+                                }
+
+                                //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                if (!in) {
+                                    items.add(parts);
+                                }
                             }
                         }
                     }

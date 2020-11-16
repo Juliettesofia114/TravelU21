@@ -71,7 +71,8 @@ public class busqueda_hotel extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onClick(View v) {
                 //Se envía al usuario a la actividad donde se muestran los presupuestos disponibles
-                Intent i = new Intent(busqueda_hotel.this, verpresupuestos.class);
+                Intent i = new Intent(busqueda_hotel.this,verpresupuestos.class);
+                i.putExtra("tipo","hotel");
                 startActivity(i);
             }
         });
@@ -109,6 +110,109 @@ public class busqueda_hotel extends AppCompatActivity implements AdapterView.OnI
                     //Se añade el nuevo objeto al árbol correpondiente
                     basededatos.rHotel(user);
 
+                    //Se traen los datos provenientes de búsqueda en caso de que provenga del layout de búsqueda
+                    Bundle extras = getIntent().getExtras();
+                    if (extras!= null) {
+                        String total = extras.getString("total");
+                        String personas = extras.getString("personas");
+                        String destino = extras.getString("destino");
+                        String hotel = extras.getString("hotel");
+                        assert personas != null;
+                        assert destino != null;
+                        if (destino.equals(user.ubicacion) && Integer.parseInt(hotel)>user.precio) {
+                            //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
+                            String[] parts = new String[9];
+                            parts[0] = user.nombreEmpresa;
+                            parts[1] = user.ubicacion;
+                            parts[2] = Integer.toString(user.max);
+                            parts[3] = user.correo;
+                            parts[4] = user.wifi;
+                            parts[5] = user.piscina;
+                            parts[6] = user.desayuno;
+                            parts[7] = user.id;
+                            parts[8] = Integer.toString(user.precio);
+                            //Condicional que revisa si está aplicado algún orden de búsqueda
+                            if (position == 0){
+
+                                //Se añade el arreglo al arreglo que se pasará como parámetro al adaptador
+                                items.add(parts);
+                            } else if(position ==1){
+                                int count = 0;
+                                boolean in = false;
+                                if(items.isEmpty()){
+                                    items.add(parts);
+                                } else {
+
+                                    //Se itera en los elementos del arreglo que será pasada al adaptador
+                                    for (int i = 0; i<items.size();i++) {
+
+                                        //Si el objeto que ingresa tiene precio menor al de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                        if (Integer.parseInt(items.get(i)[8]) < user.precio) {
+                                            items.add(count, parts);
+                                            in = true;
+                                            break;
+                                        }
+                                        count++;
+                                    }
+
+                                    //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                    if (!in) {
+                                        items.add(parts);
+                                    }
+                                }
+                            } else if(position ==2){
+                                int count = 0;
+                                boolean in = false;
+                                if(items.isEmpty()){
+                                    items.add(parts);
+                                } else {
+
+                                    //Se itera en los elementos del arreglo que será pasada al adaptador
+                                    for (int i = 0; i<items.size();i++) {
+
+                                        //Si el objeto que ingresa tiene un nombre con un primer caracter menor al primero de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                        int num = user.nombreEmpresa.charAt(0);
+                                        int mu1 = items.get(i)[0].charAt(0);
+                                        if (num<=mu1){
+                                            items.add(count,parts);
+                                            in = true;
+                                            break;
+                                        }
+                                        count++;
+                                    }
+
+                                    //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                    if (!in) {
+                                        items.add(parts);
+                                    }
+                                }
+                            } else if(position ==3){
+                                int count = 0;
+                                boolean in = false;
+                                if(items.isEmpty()){
+                                    items.add(parts);
+                                } else {
+
+                                    //Se itera en los elementos del arreglo que será pasada al adaptador
+                                    for (int i = 0; i<items.size();i++) {
+
+                                        //Si el objeto que ingresa tiene precio menor al de i, se añade el objeto en la posición de i y los elementos del arreglo se corren una posición
+                                        if (Integer.parseInt(items.get(i)[2]) < user.max) {
+                                            items.add(count, parts);
+                                            in = true;
+                                            break;
+                                        }
+                                        count++;
+                                    }
+
+                                    //En caso de que se reccora toda la lista y el objeto no haya podido ser ingresado, se añade al final del arreglo
+                                    if (!in) {
+                                        items.add(parts);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
                     //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
                     String[] parts = new String[9];
                     parts[0] = user.nombreEmpresa;
@@ -200,6 +304,7 @@ public class busqueda_hotel extends AppCompatActivity implements AdapterView.OnI
                             }
                         }
                     }
+                }
                 }
             }
 

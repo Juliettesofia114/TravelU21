@@ -106,11 +106,11 @@ public class reservas_viajero extends AppCompatActivity {
         //Se traen los datos provenientes de búsqueda en caso de que provenga del layout de búsqueda
             Bundle extrash = getIntent().getExtras();
             if (extrash!=null) {
-                String nom = extras.getString("nombreh");
-                String ubi = extras.getString("ubicacionh");
-                String corr = extras.getString("correoh");
-                String fech = extras.getString("fechah");
-                String id = extras.getString("uidh");
+                String nom = extrash.getString("nombreh");
+                String ubi = extrash.getString("ubicacionh");
+                String corr = extrash.getString("correoh");
+                String fech = extrash.getString("fechah");
+                String id = extrash.getString("uidh");
 
                 try {
                     DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
