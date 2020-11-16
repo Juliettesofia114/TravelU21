@@ -33,7 +33,7 @@ public class vercuentaservicio extends AppCompatActivity {
     Gson gson = new Gson();
     Queue<Viajero_class> queue = new Queue<>();
     private static final String FILE_NAME = "viajero.json";
-    private static final String FILE_T = "presupuesto.json";
+    private static final String FILE_T = "reservaS.json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

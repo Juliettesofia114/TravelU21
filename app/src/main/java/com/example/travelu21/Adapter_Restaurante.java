@@ -95,8 +95,8 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
 
                 //Envía al usuario a la actividad donde se guardan las reservas
                 mcontext.startActivity(i);
-                //Toast.makeText(mcontext, fech,
-                        //Toast.LENGTH_SHORT).show();
+                Toast.makeText(mcontext, uuid,
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -3,6 +3,7 @@ package com.example.travelu21;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Adapter_Hotel extends RecyclerView.Adapter<Adapter_Hotel.ViewHolder> {
@@ -37,7 +40,7 @@ public class Adapter_Hotel extends RecyclerView.Adapter<Adapter_Hotel.ViewHolder
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int i) {
         //Se toman los datos del arreglo en String
         final String nom = data.get(i)[0];
         final String ubi = data.get(i)[1];
@@ -83,13 +86,30 @@ public class Adapter_Hotel extends RecyclerView.Adapter<Adapter_Hotel.ViewHolder
         holder.precio.setText("precio por noche: "+precio);
 
         //Se le da una función al botón de reserva
+        //Se le da una función al botón de reserva
         holder.reservar.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                mcontext.startActivity(new Intent(mcontext, reservas_viajero.class));
-                Toast.makeText(mcontext, "¡Se ha guardado tu reserva!",
-                        Toast.LENGTH_SHORT).show();
 
+                final String fech = holder.fecha.getText().toString().trim();
+                //Se pide la fecha y hora actual para guardarla en los datos
+                long date = System.currentTimeMillis();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+                String dateString = sdf.format(date);
+
+                //Se crea un intent que llevará consigo los datos recogidos a la siguiente actividad
+                Intent i = new Intent(mcontext,reservas_viajero.class);
+                i.putExtra("nombreh",nom);
+                i.putExtra("ubicacionh",ubi);
+                i.putExtra("correoh", corr);
+                i.putExtra("fechah",fech);
+                i.putExtra("uidh",uuid);
+
+                //Envía al usuario a la actividad donde se guardan las reservas
+                mcontext.startActivity(i);
+                Toast.makeText(mcontext, uuid,
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

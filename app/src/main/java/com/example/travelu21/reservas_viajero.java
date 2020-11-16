@@ -1,13 +1,15 @@
 package com.example.travelu21;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,22 +27,31 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class reservas_viajero extends AppCompatActivity {
+
+    //Se instancian los elementos necesarios de forma global
+    RecyclerView recyclerView;
+    Adapter_Reservas_Cliente adapterRS;
+    //Array que permite guardar los datos que serán pasados al adaptador
+    ArrayList<String[]> items;
+
+    //Base de datos para recuperar a las reservas del usuario
+    Basededatos basededatos;
 
     //Se instancian e inicializar los archivos en los que se encuentran los usuarios
     private static final String FILE_PC = "reservaC.json";
     private static final String FILE_PS = "reservaS.json";
     private static final String FILE_V = "viajero.json";
 
-    //Se instacia e inicializa una nueva base de datos en donde se recuperan los datos
-    Basededatos basededatos = new Basededatos();
 
     Gson gson = new Gson();
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String uid = user.getUid();
+
+    String uid;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -48,12 +59,21 @@ public class reservas_viajero extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservas_viajero);
 
+        //Se inicializan los objetos instanciados previamente
+        recyclerView = findViewById(R.id.cycler);
+        items = new ArrayList<>();
+        basededatos = new Basededatos();
+        if(user!=null){
+            uid = user.getUid();
+        }
+
         recuperarV();
 
         Viajero_class user = basededatos.findv(uid);
 
         //Se traen los datos provenientes de búsqueda en caso de que provenga del layout de búsqueda
         Bundle extras = getIntent().getExtras();
+        try{
         if (extras!=null){
             String nom = extras.getString("nombre");
             String ubi = extras.getString("ubicacion");
@@ -66,8 +86,8 @@ public class reservas_viajero extends AppCompatActivity {
                 assert fech != null;
                 Date date = sourceFormat.parse(fech);
                 assert date != null;
-                ReservaC_Class reservaC = new ReservaC_Class(id,nom,corr,date.getTime(),ubi);
-                ReservaS_Class reservaS = new ReservaS_Class(uid,user.nombre, user.correo,date.getTime());
+                ReservaC_Class reservaC = new ReservaC_Class(uid,id,nom,corr,date.getTime(),ubi);
+                ReservaS_Class reservaS = new ReservaS_Class(uid,id,user.nombre, user.correo,date.getTime());
                 guardar_reservaC(reservaC);
                 guardar_reservaS(reservaS);
                 Toast.makeText(reservas_viajero.this,"¡Se ha guardado correctamente tu reserva!",
@@ -82,6 +102,39 @@ public class reservas_viajero extends AppCompatActivity {
         } else {
             recuperarPC();
         }
+        } catch (Exception e){
+        //Se traen los datos provenientes de búsqueda en caso de que provenga del layout de búsqueda
+            Bundle extrash = getIntent().getExtras();
+            if (extrash!=null) {
+                String nom = extras.getString("nombreh");
+                String ubi = extras.getString("ubicacionh");
+                String corr = extras.getString("correoh");
+                String fech = extras.getString("fechah");
+                String id = extras.getString("uidh");
+
+                try {
+                    DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    assert fech != null;
+                    Date date = sourceFormat.parse(fech);
+                    assert date != null;
+                    ReservaC_Class reservaC = new ReservaC_Class(uid, id, nom, corr, date.getTime(), ubi);
+                    ReservaS_Class reservaS = new ReservaS_Class(uid, id, user.nombre, user.correo, date.getTime());
+                    guardar_reservaC(reservaC);
+                    guardar_reservaS(reservaS);
+                    Toast.makeText(reservas_viajero.this, "¡Se ha guardado correctamente tu reserva!",
+                        Toast.LENGTH_SHORT).show();
+                    recuperarPC();
+                } catch (ParseException e1) {
+                    Toast.makeText(reservas_viajero.this, "El problema está aquí",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+        //Métodos que permiten integrar la plantilla con el layout general de la actividad
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapterRS = new Adapter_Reservas_Cliente(this,items);
+        recyclerView.setAdapter(adapterRS);
 
     }
     //Método para recuperar la base de datos de los usuarios de tipo viajero
@@ -113,17 +166,35 @@ public class reservas_viajero extends AppCompatActivity {
 
                     //Gracias al GSON y al JsonStreamParser se crea un objeto de tipo viajero con los datos proporcionados
                     ReservaC_Class reserva = gson.fromJson(e, ReservaC_Class.class);
-
-                    if(reserva.id.equals(uid)){
+                    if(reserva.id_user.equals(uid)){
                         //Se añade el nuevo objeto al árbol correpondiente
-                        basededatos.EnqueueC(reserva,reserva.fecha,reserva.id);
+                        //basededatos.EnqueueC(reserva,reserva.fecha,reserva.id_user);
+                        Boolean est = reserva.estado;
+                        String estado = "";
+                        if (est){
+                            estado = "Aceptada";
+                        } else {
+                            estado = "En espera";
+                        }
+                        Date date=new Date(reserva.fecha);
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
+                        String dateText = df2.format(date);
+                        String[] parts = new String[5];
+
+                        //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
+                        parts[0] = reserva.Nombre;
+                        parts[1] = reserva.ubicacion;
+                        parts[2] = reserva.correo;
+                        parts[3] = estado;
+                        parts[4] = dateText;
+                        items.add(parts);
                     }
                 }
             }
 
         } catch (Exception e){
             //Mensaje en pantalla en caso de que no se haya cargado correctamente la base de datos
-            Toast.makeText(reservas_viajero.this,"No se está cargando la base", Toast.LENGTH_LONG).show();
+            Toast.makeText(reservas_viajero.this,"No se está cargando la base de reservas cliente", Toast.LENGTH_LONG).show();
         }
         finally {
             if(fileInputStream != null){
@@ -165,9 +236,9 @@ public class reservas_viajero extends AppCompatActivity {
                     //Gracias al GSON y al JsonStreamParser se crea un objeto de tipo viajero con los datos proporcionados
                     ReservaS_Class reserva = gson.fromJson(e, ReservaS_Class.class);
 
-                    if(reserva.id.equals(uid)){
+                    if(reserva.id_neg.equals(uid)){
                         //Se añade el nuevo objeto al árbol correpondiente
-                        basededatos.EnqueueS(reserva,reserva.fecha,reserva.id);
+                        basededatos.EnqueueS(reserva,reserva.fecha,reserva.id_neg);
                     }
 
                 }
@@ -175,7 +246,7 @@ public class reservas_viajero extends AppCompatActivity {
 
         } catch (Exception e){
             //Mensaje en pantalla en caso de que no se haya cargado correctamente la base de datos
-            Toast.makeText(reservas_viajero.this,"No se está cargando la base", Toast.LENGTH_LONG).show();
+            Toast.makeText(reservas_viajero.this,"No se está cargando la base de reservas servicio", Toast.LENGTH_LONG).show();
         }
         finally {
             if(fileInputStream != null){
@@ -224,7 +295,7 @@ public class reservas_viajero extends AppCompatActivity {
 
         } catch (Exception e){
             //Mensaje en pantalla en caso de que no se haya cargado correctamente la base de datos
-            Toast.makeText(reservas_viajero.this,"No se está cargando la base", Toast.LENGTH_LONG).show();
+            Toast.makeText(reservas_viajero.this,"No se está cargando la base de viajeros", Toast.LENGTH_LONG).show();
         }
         finally {
             if(fileInputStream != null){
