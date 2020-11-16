@@ -62,6 +62,9 @@
     <string name="filtros">Filtros</string>
     <string name="fecha_de_reserva">Fecha de reserva</string>
     <string name="nombre_de_presupuesto">Nombre de presupuesto</string>
+    <string name="fecha">fecha</string>
+    <string name="destino">destino</string>
+    <string name="n_mero_de_personas">número de personas</string>
 
 
 </resources>

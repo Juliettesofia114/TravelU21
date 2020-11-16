@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class BST<T extends Comparable> {
@@ -122,6 +123,17 @@ public class BST<T extends Comparable> {
         }
         return t;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    void ActualizarReserva(){
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    void ActualizarDatos(String id, BinaryNode<T> t){
+
+    }
+
     void levelOrder(BinaryNode<T> t) {
         Queue<BinaryNode<T>> c = new Queue<>();
         BinaryNode<T> aux;

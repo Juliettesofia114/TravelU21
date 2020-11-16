@@ -1,7 +1,5 @@
 package com.example.travelu21;
 
-import java.util.ArrayList;
-
 public class Usuario_class {
     String nombre ;
     String contrasena ;

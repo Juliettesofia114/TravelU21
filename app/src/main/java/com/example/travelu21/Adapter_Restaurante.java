@@ -3,6 +3,7 @@ package com.example.travelu21;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurante.ViewHolder> {
 
@@ -22,11 +30,16 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
     private LayoutInflater layoutInflater;
     private ArrayList<String[]> data;
     Context mcontext;
+    Basededatos basededatos;
+    ReservaC_Class reservaC;
+    ReservaS_Class reservaS;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    Adapter_Restaurante(Context context, ArrayList<String[]> data){ //Constructor
+    Adapter_Restaurante(Context context, ArrayList<String[]> data, Basededatos basededatos){ //Constructor
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
         mcontext = context;
+        this.basededatos = basededatos;
     }
 
     @NonNull
@@ -36,9 +49,11 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
         return new ViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int i) {
+
         //Se toman los datos del arreglo en String
         final String nom = data.get(i)[0];
         final String ubi = data.get(i)[1];
@@ -47,10 +62,8 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
         String hor = data.get(i)[4];
         final String uuid = data.get(i)[5];
         final String tip = data.get(i)[6];
-        final String fech = holder.fecha.getText().toString().trim();
+        final String uid = user.getUid();
 
-        //Se crea una nueva base datos para añadir la reserva a los atributos del usuario de tipo viajero y de tipo servicio
-        Basededatos base = new Basededatos();
 
         //Se llenan los datos de la plantilla con los datos de la base de datos
         holder.nombre.setText(nom);
@@ -62,11 +75,28 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
 
         //Se le da una función al botón de reserva
         holder.reservar.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                mcontext.startActivity(new Intent(mcontext, reservas_viajero.class));
-                Toast.makeText(mcontext, "¡Se ha guardado tu reserva!",
-                        Toast.LENGTH_SHORT).show();
+
+                final String fech = holder.fecha.getText().toString().trim();
+                //Se pide la fecha y hora actual para guardarla en los datos
+                long date = System.currentTimeMillis();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+                String dateString = sdf.format(date);
+
+                //Se crea un intent que llevará consigo los datos recogidos a la siguiente actividad
+                Intent i = new Intent(mcontext,reservas_viajero.class);
+                i.putExtra("nombre",nom);
+                i.putExtra("ubicacion",ubi);
+                i.putExtra("correo", corr);
+                i.putExtra("fecha",fech);
+                i.putExtra("uid",uuid);
+
+                //Envía al usuario a la actividad donde se guardan las reservas
+                mcontext.startActivity(i);
+                //Toast.makeText(mcontext, fech,
+                        //Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -100,5 +130,6 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
             tipo = itemView.findViewById(R.id.tipo);
         }
     }
+
 
 }

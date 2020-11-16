@@ -2,18 +2,20 @@ package com.example.travelu21;
 
 import java.util.Arrays;
 
-public class PriorityQueue<T> {
+public class PriorityQueue<T extends Comparable> {
     int currentSize;
     int capacity;
     Node[] arr;
 
     static class Node<T> {
         T data;
-        int priority;
+        long priority;
+        String id;
 
-        Node(T data, int priority) {
+        Node(T data, long priority, String id) {
             this.data = data;
             this.priority = priority;
+            this.id = id;
         }
 
         Node() {
@@ -27,12 +29,12 @@ public class PriorityQueue<T> {
         arr = new Node[capacity];
     }
 
-    void insert(T x, int priority) { //insertar un Nodo nuevo
+    void insert(T x, long priority, String id) { //insertar un Nodo nuevo
         if (currentSize == arr.length - 1) {
             arr = Arrays.copyOf(arr, capacity * 2 + 1);
             capacity = arr.length;
         }
-        Node<T> t = new Node<>(x, priority);
+        Node<T> t = new Node<>(x, priority, id);
         int hole = ++currentSize;
         arr[hole]=t;
         siftUp(hole);

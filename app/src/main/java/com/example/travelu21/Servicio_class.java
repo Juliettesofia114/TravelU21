@@ -4,7 +4,6 @@ public class Servicio_class extends Usuario_class implements Comparable {
     String url ;
     String ubicacion ;
     String nombreEmpresa;
-    Queue clientes ;
     Queue reseñas;
     //Constructor que hereda los atributos de la clase usuario
     public Servicio_class(String nombre, String nombreEmpresa, String ubicacion, String contrasena, String correo, int tipo, String descripcion, String url, String id) {

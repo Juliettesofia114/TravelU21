@@ -26,7 +26,7 @@ public class SingleLinkedList <T> implements Serializable {
         tail = new NodoSimple();
     }
 
-    void pushFront(Object key, String id) { //Añadir al inicio de la lista
+    void pushFront(T key, String id) { //Añadir al inicio de la lista
         NodoSimple nodo = new NodoSimple(key, id);
         nodo.next = head.next;
         head.next = nodo;

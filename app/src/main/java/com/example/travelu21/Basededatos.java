@@ -6,7 +6,6 @@ import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 
 public class Basededatos <T> implements Serializable {
@@ -15,10 +14,15 @@ public class Basededatos <T> implements Serializable {
     BST<Viajero_class> bviajero;
     BST<Restaurante_class> brestaurante;
     BST<Hotel_class> bhotel;
+    BST<Presupuesto_Class> presupuestos;
+    PriorityQueue<ReservaC_Class> reservas_viajero;
+    PriorityQueue<ReservaS_Class> reservas_servicio;
+
     Basededatos(){ //Constructor
-        this.bviajero = new BST();
-        this.bhotel = new BST();
-        this.brestaurante = new BST();
+        this.bviajero = new BST<>();
+        this.bhotel = new BST<>();
+        this.brestaurante = new BST<>();
+        this.presupuestos = new BST<>();
     }
 
     //Método para registrar viajero
@@ -27,17 +31,17 @@ public class Basededatos <T> implements Serializable {
     }
 
     //Método para registrar hotel
-    public void rHotel(Hotel_class h){
+    void rHotel(Hotel_class h){
         bhotel.insert(h, h.id);
     }
 
     //Método para registrar restaurante
-    public void rRestaurante(Restaurante_class r){
+    void rRestaurante(Restaurante_class r){
         brestaurante.insert(r, r.id);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public Viajero_class findv(String id){
+    Viajero_class findv(String id){
         BST.BinaryNode<Viajero_class> node = bviajero.find(id, bviajero.root);
         Viajero_class user = node.data;
         return user;
@@ -65,4 +69,16 @@ public class Basededatos <T> implements Serializable {
         return brestaurante.isIn(id,brestaurante.root);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void ActualizarP(String id_user, Presupuesto_Class p){
+        presupuestos.insert(p,id_user+presupuestos.height(presupuestos.root));
+    }
+
+    public void EnqueueC(ReservaC_Class x, long tiempo, String id){
+        reservas_viajero.insert(x,tiempo,id);
+    }
+
+    public void EnqueueS(ReservaS_Class x, long tiempo, String id){
+        reservas_servicio.insert(x,tiempo,id);
+    }
 }

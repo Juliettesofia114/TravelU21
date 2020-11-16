@@ -121,9 +121,9 @@ public class busqueda_restaurante extends AppCompatActivity implements AdapterVi
 
                     //Condicional que revisa si está aplicado algún orden de búsqueda
                     if (position == 0){
-
                         //Se añade el arreglo al arreglo que se pasará como parámetro al adaptador
                         items.add(parts);
+
                     } else if(position ==2){
                         int count = 0;
                         boolean in = false;
@@ -232,7 +232,7 @@ public class busqueda_restaurante extends AppCompatActivity implements AdapterVi
 
         //Métodos que permiten integrar la plantilla con el layout general de la actividad
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapterRes = new Adapter_Restaurante(this,items);
+        adapterRes = new Adapter_Restaurante(this,items, basededatos);
         recyclerView.setAdapter(adapterRes);
     }
 
