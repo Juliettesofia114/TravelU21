@@ -34,6 +34,7 @@ public class hotel extends AppCompatActivity {
     private FirebaseAuth mAuth;
     Gson gson = new Gson();
     private static final String FILE_NAME = "hotel.json";
+    private static final String FILE_CRED = "credenciales.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,13 +134,19 @@ public class hotel extends AppCompatActivity {
 
                             //Se crea un nuevo objeto de tipo viajero el cual será el que almacenará los datos dados por el usuario
                             Hotel_class nuevo = new Hotel_class(nom,emp,ubi,pass,corr,2,des,url1,uid,prec,maximum,finalWif,finalDesa,finalPisci);
+                            User_init_Class nuevascred = new User_init_Class(corr,pass);
 
                             try {
                                 //Se intenta hacer el proceso de registro del nuevo objeto en el archivo JSON
                                 guardar_hotel(nuevo);
+
+                                //Se intenta hacer el proceso de registro del nuevo objeto en el archivo JSON
+                                guardar_Hash(nuevascred);
+
                                 //Se envía a pantalla un mensaje de bienvenida al usuario
                                 Toast.makeText(hotel.this, "¡Bienvenido a TravelU2: "+nuevo.nombreEmpresa+"!",
                                         Toast.LENGTH_SHORT).show();
+
                                 //Se envía al usuario a la actividad principal de tipo servicio sin la posibilidad de devolverse
                                 Intent i = new Intent(hotel.this, main_servicio.class);
                                 startActivity(i);
@@ -165,6 +172,28 @@ public class hotel extends AppCompatActivity {
             fileOutputStream = openFileOutput(FILE_NAME, MODE_APPEND);
             fileOutputStream.write(json.getBytes());
             Log.d("TAG1","Fichero salvado en: "+getFilesDir()+"/"+FILE_NAME);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(fileOutputStream!=null){
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    void guardar_Hash(User_init_Class user){
+        String json = gson.toJson(user);
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = openFileOutput(FILE_CRED, MODE_APPEND);
+            fileOutputStream.write(json.getBytes());
+            Log.d("TAG1","Fichero salvado en: "+getFilesDir()+"/"+FILE_CRED);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

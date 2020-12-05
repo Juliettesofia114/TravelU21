@@ -32,6 +32,7 @@ public class restaurante extends AppCompatActivity {
     private EditText tipo;
     Gson gson = new Gson();
     private static final String FILE_NAME = "restaurante.json";
+    private static final String FILE_CRED = "credenciales.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,10 +107,15 @@ public class restaurante extends AppCompatActivity {
 
                             //Se crea un nuevo objeto de tipo viajero el cual será el que almacenará los datos dados por el usuario
                             Restaurante_class nuevo = new Restaurante_class(nom,emp,ubi,pass,corr,1,des,url1,uid,med,hor,maxi,tip);
+                            User_init_Class nuevascred = new User_init_Class(corr,pass);
 
                             try {
                                 //Se intenta hacer el proceso de registro del nuevo objeto en el archivo JSON
                                 guardar_restaurante(nuevo);
+
+                                //Se intenta hacer el proceso de registro del nuevo objeto en el archivo JSON
+                                guardar_Hash(nuevascred);
+
                                 //Se envía a pantalla un mensaje de bienvenida al usuario
                                 Toast.makeText(restaurante.this, "¡Bienvenido a TravelU2: "+nuevo.nombreEmpresa+"!",
                                         Toast.LENGTH_SHORT).show();
@@ -137,6 +143,27 @@ public class restaurante extends AppCompatActivity {
             fileOutputStream = openFileOutput(FILE_NAME, MODE_APPEND);
             fileOutputStream.write(json.getBytes());
             Log.d("TAG1","Fichero salvado en: "+getFilesDir()+"/"+FILE_NAME);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(fileOutputStream!=null){
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    void guardar_Hash(User_init_Class user){
+        String json = gson.toJson(user);
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = openFileOutput(FILE_CRED, MODE_APPEND);
+            fileOutputStream.write(json.getBytes());
+            Log.d("TAG1","Fichero salvado en: "+getFilesDir()+"/"+FILE_CRED);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

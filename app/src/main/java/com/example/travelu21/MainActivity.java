@@ -30,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
+
 public class MainActivity extends AppCompatActivity { //Clase que maneja la pantalla de inicio de sesión
     //Se instancian objetos propios de Firebase para llamar los datos que se encuentran en Firebase
     private FirebaseAuth mAuth;
@@ -43,9 +44,12 @@ public class MainActivity extends AppCompatActivity { //Clase que maneja la pant
     private static final String FILE_V = "viajero.json";
     private static final String FILE_H = "hotel.json";
     private static final String FILE_R = "restaurante.json";
+    private static final String FILE_CRED = "credenciales.json";
 
     //Se instacia e inicializa una nueva base de datos en donde se recuperan los datos
     Basededatos basededatos = new Basededatos();
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    HashTable credenciales = new HashTable(500,503);
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class MainActivity extends AppCompatActivity { //Clase que maneja la pant
         recuperarH();
         recuperarR();
         recuperarV();
+        recuperarC();
 
         //Método que permite verificar si hay un usuario activo
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -194,9 +199,10 @@ public class MainActivity extends AppCompatActivity { //Clase que maneja la pant
             pass.requestFocus();
             return;
         }
-
-        //Método de Firebase para autenticar el usuario
-        mAuth.signInWithEmailAndPassword(Em, Ps)
+        //Proceso para autenticar el usuario
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (credenciales.isIn(Em,Ps)){
+                mAuth.signInWithEmailAndPassword(Em, Ps)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -239,6 +245,11 @@ public class MainActivity extends AppCompatActivity { //Clase que maneja la pant
                         }
                     }
                 });
+            } else {
+                Toast.makeText(MainActivity.this,"Las credenciales ingresadas son incorrectas, intenta nuevamente.", Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
     //Método para recuperar la base de datos de los usuarios de tipo viajero
     @SuppressLint("SetTextI18n")
@@ -370,6 +381,57 @@ public class MainActivity extends AppCompatActivity { //Clase que maneja la pant
 
                     //Se añade el nuevo objeto al árbol correpondiente
                     basededatos.rRestaurante(user);
+                }
+            }
+        } catch (Exception e){
+            //Mensaje en pantalla en caso de que no se haya cargado correctamente la base de datos
+            Toast.makeText(MainActivity.this,"No se está cargando la base", Toast.LENGTH_LONG).show();
+        }
+        finally {
+            if(fileInputStream != null){
+                try{
+                    //Se cierra el lector de archivo
+                    fileInputStream.close();
+                } catch (Exception ignored){
+
+                }
+            }
+        }
+    }
+
+    //Método para recuperar la base de datos de los usuarios de tipo restaurante
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void recuperarC() {
+        FileInputStream fileInputStream = null;
+        try {
+            //Se abre el archivo donde se guardan los hoteles registrados
+            fileInputStream = openFileInput(FILE_CRED);
+
+            //Se crea un objeto para leer el archivo
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            new BufferedReader(inputStreamReader);
+
+            //Se crea un Gson y un JsonStreamParser para la lectura de los objetos
+            Gson gson = new GsonBuilder().create();
+            JsonStreamParser p = new JsonStreamParser(inputStreamReader);
+
+            //Mientras que exista un siguiente objeto
+            while (p.hasNext()) {
+
+                //Se hace referencia al siguiente objeto de p
+                JsonElement e = p.next();
+
+                //Gracias al GSON y al JsonStreamParser se crea un objeto de tipo viajero con los datos proporcionados
+                if (e.isJsonObject()) {
+
+                    //Se añade el nuevo objeto al árbol correpondiente
+                    User_init_Class user = gson.fromJson(e, User_init_Class.class);
+
+                    //Se añade el nuevo objeto al árbol correpondiente
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        credenciales.add(user.correo,user.contrasena);
+                    }
                 }
             }
         } catch (Exception e){

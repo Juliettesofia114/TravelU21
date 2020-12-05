@@ -32,6 +32,7 @@ public class registroc extends AppCompatActivity {
     private FirebaseAuth mAuth;
     Gson gson = new Gson();
     private static final String FILE_NAME = "viajero.json";
+    private static final String FILE_CRED = "credenciales.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,13 +125,19 @@ public class registroc extends AppCompatActivity {
 
                             //Se crea un nuevo objeto de tipo viajero el cual será el que almacenará los datos dados por el usuario
                             Viajero_class nuevo = new Viajero_class(nom,pass,corr,des,0,uid);
+                            User_init_Class nuevascred = new User_init_Class(corr,pass);
 
                             try {
                                 //Se intenta hacer el proceso de registro del nuevo objeto en el archivo JSON
                                 guardar_viajero(nuevo);
+
+                                //Se intenta hacer el proceso de registro del nuevo objeto en el archivo JSON
+                                guardar_Hash(nuevascred);
+
                                 //Se envía a pantalla un mensaje de bienvenida al usuario
                                 Toast.makeText(registroc.this, "¡Bienvenido a TravelU2: "+nuevo.nombre+"!",
                                         Toast.LENGTH_SHORT).show();
+
                                 //Se envía al usuario a la actividad principal de tipo viajero sin la posibilidad de devolverse
                                 Intent i = new Intent(registroc.this, main_viajeros.class);
                                 startActivity(i);
@@ -170,4 +177,27 @@ public class registroc extends AppCompatActivity {
             }
         }
     }
+
+    void guardar_Hash(User_init_Class user){
+        String json = gson.toJson(user);
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = openFileOutput(FILE_CRED, MODE_APPEND);
+            fileOutputStream.write(json.getBytes());
+            Log.d("TAG1","Fichero salvado en: "+getFilesDir()+"/"+FILE_CRED);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(fileOutputStream!=null){
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
