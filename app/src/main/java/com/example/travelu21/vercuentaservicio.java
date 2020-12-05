@@ -33,7 +33,7 @@ public class vercuentaservicio extends AppCompatActivity {
     Gson gson = new Gson();
     Queue<Viajero_class> queue = new Queue<>();
     private static final String FILE_NAME = "viajero.json";
-    private static final String FILE_T = "reservaS.json";
+    private static final String FILE_T = "archivo.json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +43,13 @@ public class vercuentaservicio extends AppCompatActivity {
         recupera = findViewById(R.id.button3);
         actualiza = findViewById(R.id.button2);
         //recuperarV();
+        final Viajero_class nuevo1 = new Viajero_class("nombre","pass","corr","des",0,"uid4");
         final Viajero_class nuevo = new Viajero_class("nom","pass","corr","des",0,"uid5");
         guarda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 guardar_viajero(nuevo);
+                guardar_viajero(nuevo1);
             }
         });
         recupera.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +61,12 @@ public class vercuentaservicio extends AppCompatActivity {
         actualiza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String valor = editText.getText().toString().trim();
+                encolar();
                 borrar();
+                actualizar(nuevo);
+                nuevo.nombre = valor;
+                guardar_viajero(nuevo);
             }
         });
     }
@@ -177,12 +184,12 @@ public class vercuentaservicio extends AppCompatActivity {
         }
     }
     @SuppressLint("SetTextI18n")
-    public void actualizar(){
+    public void actualizar(Viajero_class user){
         int count = 0;
         while(!queue.isEmpty()){
             Viajero_class current = queue.dequeue();
             String nombre = current.nombre;
-            if (!nombre.equals("nombre")){
+            if (!user.id.equals(current.id)){
                 guardar_viajero(current);
                 count++;
             }

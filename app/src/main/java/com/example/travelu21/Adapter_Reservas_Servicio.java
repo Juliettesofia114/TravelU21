@@ -1,6 +1,7 @@
 package com.example.travelu21;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class Adapter_Reservas_Servicio extends RecyclerView.Adapter<Adapter_Rese
          final String nom = data.get(i)[0];
          final String corr = data.get(i)[1];
          final String fecha = data.get(i)[2];
+         final String id_user = data.get(i)[3];
 
          holder.nombre.setText(nom);
          holder.correo.setText(corr);
@@ -44,6 +46,11 @@ public class Adapter_Reservas_Servicio extends RecyclerView.Adapter<Adapter_Rese
              public void onClick(View v) {
                 holder.aceptar.setEnabled(false);
                 holder.rechazar.setEnabled(false);
+                Intent i = new Intent(mcontext,reservas_servicio.class);
+                i.putExtra("id_viajero",id_user);
+                i.putExtra("estado","true");
+                //Envía al usuario a la actividad donde se guardan las reservas
+                 mcontext.startActivity(i);
              }
          });
          holder.rechazar.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +58,12 @@ public class Adapter_Reservas_Servicio extends RecyclerView.Adapter<Adapter_Rese
              public void onClick(View v) {
                  holder.rechazar.setEnabled(false);
                  holder.aceptar.setEnabled(false);
+                 Intent i = new Intent(mcontext,reservas_servicio.class);
+                 i.putExtra("id_viajero",id_user);
+                 i.putExtra("estado","false");
+                 //Envía al usuario a la actividad donde se guardan las reservas
+                 mcontext.startActivity(i);
+
              }
          });
     }
