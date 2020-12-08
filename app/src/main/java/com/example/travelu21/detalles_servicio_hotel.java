@@ -70,6 +70,7 @@ public class detalles_servicio_hotel extends AppCompatActivity {
 
                     //Envía al usuario a la actividad donde se guardan las reservas
                     startActivity(i);
+                    finish();
                 }
             });
         }
