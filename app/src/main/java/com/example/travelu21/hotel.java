@@ -81,6 +81,7 @@ public class hotel extends AppCompatActivity {
         final String url1 = extras.getString("url");
         final String pass = extras.getString("password");
         final String des = extras.getString("descrip");
+        final String med = extras.getString("medio");
         String fech = extras.getString("fecha");
 
         //Se le asigna a cada String las entradas dadas por el usuario desde la interfaz gráfica
@@ -133,7 +134,7 @@ public class hotel extends AppCompatActivity {
                             String uid = currentUser.getUid();
 
                             //Se crea un nuevo objeto de tipo viajero el cual será el que almacenará los datos dados por el usuario
-                            Hotel_class nuevo = new Hotel_class(nom,emp,ubi,pass,corr,2,des,url1,uid,prec,maximum,finalWif,finalDesa,finalPisci);
+                            Hotel_class nuevo = new Hotel_class(nom,emp,ubi,pass,corr,2,des,url1,uid,prec,maximum,finalWif,finalDesa,finalPisci,med);
                             User_init_Class nuevascred = new User_init_Class(corr,pass);
 
                             try {

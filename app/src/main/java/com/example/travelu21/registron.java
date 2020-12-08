@@ -19,6 +19,8 @@ public class registron extends AppCompatActivity {
     private EditText ubicacion;
     private EditText url;
     private EditText empresa;
+    private EditText med;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class registron extends AppCompatActivity {
         negocio = findViewById(R.id.empresa);
         ubicacion = findViewById(R.id.ubicacion);
         url = findViewById(R.id.url);
+        med = findViewById(R.id.medio);
         Button cont = findViewById(R.id.continuer);
         Button cancelar = findViewById(R.id.cancel);
         cancelar.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +61,7 @@ public class registron extends AppCompatActivity {
         final String neg = negocio.getText().toString().trim();
         final String ubi = ubicacion.getText().toString().trim();
         final String url1 = url.getText().toString().trim();
+        final String medio = med.getText().toString().trim();
         //Condiciones para que los campos no estén vacíos o no sean correctos
         if (nom.isEmpty()) {
             nombre.setError("Campo obligatorio");
@@ -128,6 +132,7 @@ public class registron extends AppCompatActivity {
         i.putExtra("negocio",neg);
         i.putExtra("ubicacion",ubi);
         i.putExtra("url",url1);
+        i.putExtra("medio", medio);
         startActivity(i);
     }
 }

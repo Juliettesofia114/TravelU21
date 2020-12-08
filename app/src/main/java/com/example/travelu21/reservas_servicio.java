@@ -225,7 +225,7 @@ public class reservas_servicio extends AppCompatActivity {
                         Date date=new Date(reserva.fecha);
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
                         String dateText = df2.format(date);
-                        String[] parts = new String[6];
+                        String[] parts = new String[7];
 
                         //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
                         parts[0] = reserva.Nombre;
@@ -234,6 +234,7 @@ public class reservas_servicio extends AppCompatActivity {
                         parts[3] = reserva.id_user;
                         parts[4] = Long.toString(reserva.fecha);
                         parts[5] = reserva.id_neg;
+                        parts[6] = reserva.estado;
                         items.add(parts);
                     }
                 }
@@ -326,7 +327,7 @@ public class reservas_servicio extends AppCompatActivity {
                     queueS.enqueue(user);
                 }
             }
-            Toast.makeText(reservas_servicio.this,"Se carga", Toast.LENGTH_LONG).show();
+            //Toast.makeText(reservas_servicio.this,"Se carga", Toast.LENGTH_LONG).show();
         } catch (Exception e){
             //Mensaje en pantalla en caso de que no se haya cargado correctamente la base de datos
             Toast.makeText(reservas_servicio.this,"No se está cargando la base", Toast.LENGTH_LONG).show();
@@ -356,7 +357,7 @@ public class reservas_servicio extends AppCompatActivity {
                 guardar_reservaC(current);
             }
         }
-        Toast.makeText(reservas_servicio.this, "Se ha actualizado correctamente", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(reservas_servicio.this, "Se ha actualizado correctamente", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("SetTextI18n")
@@ -439,6 +440,7 @@ public class reservas_servicio extends AppCompatActivity {
             }
         }
     }
+
     void guardar_reservaS(ReservaS_Class user){
         String json = gson.toJson(user);
         FileOutputStream fileOutputStream = null;

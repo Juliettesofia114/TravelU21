@@ -135,6 +135,7 @@ public class busqueda_restaurante extends AppCompatActivity implements AdapterVi
                             parts[4] = user.horario;
                             parts[5] = user.id;
                             parts[6] = user.tipor;
+                            //parts[7] = user.medio;
 
                             //Condicional que revisa si está aplicado algún orden de búsqueda
                             if (position == 0){

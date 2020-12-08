@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".exitoreserva"></activity>
+        <activity android:name=".detalles_servicio_hotel"></activity>
+        <activity android:name=".detalles_servicio" />
+        <activity android:name=".favoritos" />
+        <activity android:name=".exitoreserva" />
         <activity android:name=".vercuentaservicio" />
         <activity android:name=".vercuenta" />
         <activity android:name=".crearpresupuesto" />

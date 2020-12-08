@@ -57,20 +57,18 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
         //Se toman los datos del arreglo en String
         final String nom = data.get(i)[0];
         final String ubi = data.get(i)[1];
-        String max = data.get(i)[2];
+        final String max = data.get(i)[2];
         final String corr = data.get(i)[3];
-        String hor = data.get(i)[4];
+        final String hor = data.get(i)[4];
         final String uuid = data.get(i)[5];
         final String tip = data.get(i)[6];
+        //final String med = data.get(i)[7];
         final String uid = user.getUid();
 
 
         //Se llenan los datos de la plantilla con los datos de la base de datos
         holder.nombre.setText(nom);
         holder.ubicacion.setText(ubi);
-        holder.correo.setText(corr);
-        holder.maximo.setText("máximo de personas: "+max);
-        holder.horario.setText("horario: "+hor);
         holder.tipo.setText("Tipo: "+tip);
 
         //Se le da una función al botón de reserva
@@ -79,19 +77,16 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
             @Override
             public void onClick(View v) {
 
-                final String fech = holder.fecha.getText().toString().trim();
-                //Se pide la fecha y hora actual para guardarla en los datos
-                long date = System.currentTimeMillis();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
-                String dateString = sdf.format(date);
-
                 //Se crea un intent que llevará consigo los datos recogidos a la siguiente actividad
-                Intent i = new Intent(mcontext,reservas_viajero.class);
+                Intent i = new Intent(mcontext,detalles_servicio.class);
                 i.putExtra("nombre",nom);
                 i.putExtra("ubicacion",ubi);
                 i.putExtra("correo", corr);
-                i.putExtra("fecha",fech);
+                i.putExtra("maximo", max);
+                i.putExtra("horario", hor);
+                i.putExtra("tipo", tip);
                 i.putExtra("uid",uuid);
+                //i.putExtra("medio", med);
 
                 //Envía al usuario a la actividad donde se guardan las reservas
                 mcontext.startActivity(i);
@@ -109,11 +104,7 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
         //Se instancian los text views
         TextView nombre;
         TextView ubicacion;
-        TextView maximo;
-        TextView correo;
-        TextView horario;
         TextView tipo;
-        EditText fecha;
         Button reservar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,11 +112,7 @@ public class Adapter_Restaurante extends RecyclerView.Adapter<Adapter_Restaurant
             //Se relacionan los text views con los elementos del layout de la plantilla
             nombre = itemView.findViewById(R.id.nombreres);
             ubicacion = itemView.findViewById(R.id.ubicacion);
-            maximo = itemView.findViewById(R.id.maximo);
-            correo = itemView.findViewById(R.id.correror);
-            fecha = itemView.findViewById(R.id.fecha);
             reservar = itemView.findViewById(R.id.reservares);
-            horario = itemView.findViewById(R.id.horario);
             tipo = itemView.findViewById(R.id.tipo);
         }
     }

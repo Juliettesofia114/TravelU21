@@ -65,6 +65,9 @@
     <string name="fecha">fecha</string>
     <string name="destino">destino</string>
     <string name="n_mero_de_personas">número de personas</string>
+    <string name="medio_de_pago_aceptado">Medio de pago aceptado</string>
+    <string name="reservar">reservar</string>
+    <string name="agregar_a_favoritos">Agregar a favoritos</string>
 
 
 </resources>

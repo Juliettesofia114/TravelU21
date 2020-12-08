@@ -1,14 +1,13 @@
 package com.example.travelu21;
 
 public class Restaurante_class extends Servicio_class implements Comparable{
-    private String medio;
+
     String horario;
     int max;
     String tipor;
 
     public Restaurante_class(String nombre, String nombreEmpresa, String ubicacion, String contrasena, String correo, int tipo, String descripcion, String url, String id, String med, String horario, int max, String tipores) {
-        super(nombre, nombreEmpresa, ubicacion, contrasena, correo, tipo, descripcion, url, id);
-        this.medio = med;
+        super(nombre, nombreEmpresa, ubicacion, contrasena, correo, tipo, descripcion, url, id, med);
         this.horario = horario;
         this.max = max;
         this.tipor = tipores;

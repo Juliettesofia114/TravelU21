@@ -39,9 +39,14 @@ public class Adapter_Reservas_Servicio extends RecyclerView.Adapter<Adapter_Rese
          final String id_user = data.get(i)[3];
          final String fechad = data.get(i)[4];
          final String id_neg = data.get(i)[5];
+         final String estado = data.get(i)[6];
          holder.nombre.setText(nom);
          holder.correo.setText(corr);
          holder.fecha.setText(fecha);
+         if(estado.equals("true") || estado.equals("false")){
+             holder.aceptar.setEnabled(false);
+             holder.rechazar.setEnabled(false);
+         }
          holder.aceptar.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {

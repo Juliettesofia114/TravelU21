@@ -42,7 +42,6 @@ public class restaurante extends AppCompatActivity {
         //Se inicializan los objetos relacionándolos con su respectivo componente de la interfaz gráfica
         Button regis = findViewById(R.id.registodef);
         Button cancelar = findViewById(R.id.cancel);
-        medio = findViewById(R.id.medio);
         horario = findViewById(R.id.horario);
         maximo = findViewById(R.id.comensales);
         tipo = findViewById(R.id.tipo);
@@ -80,10 +79,11 @@ public class restaurante extends AppCompatActivity {
         final String url1 = extras.getString("url");
         final String pass = extras.getString("password");
         final String des = extras.getString("descrip");
+        final String med = extras.getString("medio");
         String fech = extras.getString("fecha");
 
         //Se le asigna a cada String las entradas dadas por el usuario desde la interfaz gráfica
-        final String med = medio.getText().toString().trim();
+
         final String hor = horario.getText().toString().trim();
         final int maxi = Integer.parseInt(maximo.getText().toString().trim());
         final String tip = tipo.getText().toString().trim();

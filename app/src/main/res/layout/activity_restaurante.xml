@@ -16,17 +16,18 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="32dp"
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:text="@string/llena_los_siguientes_campos_y_podr_s_ser_parte_de_esta_comunidad"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/medio"
+        app:layout_constraintBottom_toTopOf="@+id/horario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -112,7 +113,6 @@
 
     <EditText
         android:id="@+id/horario"
-        android:padding="8sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -120,18 +120,20 @@
         android:layout_marginEnd="48dp"
         android:layout_marginRight="48dp"
         android:layout_marginBottom="24dp"
+        android:autofillHints=""
         android:background="#FFFFFF"
         android:ems="10"
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:hint="@string/horario_de_atenci_n"
         android:inputType="textPersonName"
+        android:padding="8sp"
         android:textColorHint="#ff8000"
         app:layout_constraintBottom_toTopOf="@+id/comensales"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/medio"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
         android:id="@+id/comensales"
@@ -177,30 +179,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/comensales"
-        android:autofillHints="" />
-
-    <EditText
-        android:id="@+id/medio"
-        android:padding="8sp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="24dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:fontFamily="sans-serif-smallcaps"
-        android:gravity="center"
-        android:hint="@string/medio_de_pago"
-        android:inputType="textPersonName"
-        android:textColorHint="#ff8000"
-        app:layout_constraintBottom_toTopOf="@+id/horario"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
         android:autofillHints="" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

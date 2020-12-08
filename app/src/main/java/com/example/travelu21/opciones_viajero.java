@@ -1,26 +1,13 @@
 package com.example.travelu21;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonStreamParser;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 
 public class opciones_viajero extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -36,8 +23,15 @@ public class opciones_viajero extends AppCompatActivity {
         //Se instancian los objetos relacionádolos con la interfaz gráfica
         Button cerrar = findViewById(R.id.cerrar);
         Button datos = findViewById(R.id.verdato);
+        Button favoritos = findViewById(R.id.favoritos);
 
         //Métodos que le dan funcionalidad a los botones
+        favoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), favoritos.class));
+            }
+        });
         datos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

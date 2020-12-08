@@ -7,8 +7,8 @@ public class Hotel_class extends Servicio_class{
     String piscina;
     int precio;
 
-    public Hotel_class(String nombre, String nombreEmpresa, String ubicacion, String contrasena, String correo, int tipo, String descripcion, String url, String id, int precio, int max, String wifi, String desayuno, String piscina) {
-        super(nombre, nombreEmpresa, ubicacion, contrasena, correo, tipo, descripcion, url, id);
+    public Hotel_class(String nombre, String nombreEmpresa, String ubicacion, String contrasena, String correo, int tipo, String descripcion, String url, String id, int precio, int max, String wifi, String desayuno, String piscina, String medio) {
+        super(nombre, nombreEmpresa, ubicacion, contrasena, correo, tipo, descripcion, url, id, medio);
         this.max = max;
         this.wifi = wifi;
         this.desayuno = desayuno;

@@ -44,14 +44,13 @@ public class Adapter_Hotel extends RecyclerView.Adapter<Adapter_Hotel.ViewHolder
         //Se toman los datos del arreglo en String
         final String nom = data.get(i)[0];
         final String ubi = data.get(i)[1];
-        String max = data.get(i)[2];
+        final String max = data.get(i)[2];
         final String corr = data.get(i)[3];
         String wifi = data.get(i)[4];
-        String pis = data.get(i)[5];
-        String des = data.get(i)[6];
+        final String pis = data.get(i)[5];
+        final String des = data.get(i)[6];
         final String uuid = data.get(i)[7];
         final String precio = data.get(i)[8];
-        final String fech = holder.fecha.getText().toString().trim();
 
         //Se crea una nueva base datos para añadir la reserva a los atributos del usuario de tipo viajero y de tipo servicio
         Basededatos base = new Basededatos();
@@ -76,39 +75,33 @@ public class Adapter_Hotel extends RecyclerView.Adapter<Adapter_Hotel.ViewHolder
         }
 
         //Se llenan los datos de la plantilla con los datos de la base de datos
-        holder.wifi.setText("wifi: "+wif);
-        holder.piscina.setText("piscina: "+psi);
-        holder.desayuno.setText("desayuno incluído: "+desa);
         holder.nombre.setText(nom);
         holder.ubicacion.setText(ubi);
-        holder.correo.setText(corr);
-        holder.maximo.setText("máximo de personas: "+max);
         holder.precio.setText("precio por noche: "+precio);
 
         //Se le da una función al botón de reserva
+        final String finalWif = wif;
+        final String finalPsi = psi;
+        final String finalDesa = desa;
         holder.reservar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
 
-                final String fech = holder.fecha.getText().toString().trim();
-                //Se pide la fecha y hora actual para guardarla en los datos
-                long date = System.currentTimeMillis();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
-                String dateString = sdf.format(date);
-
                 //Se crea un intent que llevará consigo los datos recogidos a la siguiente actividad
-                Intent i = new Intent(mcontext,reservas_viajero.class);
+                Intent i = new Intent(mcontext,detalles_servicio_hotel.class);
                 i.putExtra("nombreh",nom);
                 i.putExtra("ubicacionh",ubi);
                 i.putExtra("correoh", corr);
-                i.putExtra("fechah",fech);
                 i.putExtra("uidh",uuid);
+                i.putExtra("wifi", finalWif);
+                i.putExtra("piscina", finalPsi);
+                i.putExtra("desayuno", finalDesa);
+                i.putExtra("precio", precio);
+                i.putExtra("maximo", max);
 
                 //Envía al usuario a la actividad donde se guardan las reservas
                 mcontext.startActivity(i);
-                Toast.makeText(mcontext, uuid,
-                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -123,13 +116,7 @@ public class Adapter_Hotel extends RecyclerView.Adapter<Adapter_Hotel.ViewHolder
         //Se instancian los text views
         TextView nombre;
         TextView ubicacion;
-        TextView maximo;
-        TextView correo;
-        TextView wifi;
-        TextView piscina;
-        TextView desayuno;
         TextView precio;
-        EditText fecha;
         Button reservar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -137,12 +124,6 @@ public class Adapter_Hotel extends RecyclerView.Adapter<Adapter_Hotel.ViewHolder
             //Se relacionan los text views con los elementos del layout de la plantilla
             nombre = itemView.findViewById(R.id.nombrehotel);
             ubicacion = itemView.findViewById(R.id.ubicacionh);
-            maximo = itemView.findViewById(R.id.maximoh);
-            correo = itemView.findViewById(R.id.correrh);
-            wifi = itemView.findViewById(R.id.wifi);
-            piscina = itemView.findViewById(R.id.piscna);
-            desayuno = itemView.findViewById(R.id.desayuno);
-            fecha = itemView.findViewById(R.id.fechah);
             precio = itemView.findViewById(R.id.precio);
             reservar = itemView.findViewById(R.id.reservarh);
         }
