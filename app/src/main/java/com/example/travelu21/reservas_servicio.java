@@ -81,12 +81,15 @@ public class reservas_servicio extends AppCompatActivity {
         if (extras!=null){
             String id_viajero = extras.getString("id_viajero");
             String estado = extras.getString("estado");
+            String id_negocio = extras.getString("id_negocio");
+            String fecha = extras.getString("fecha");
             encolarC();
             borrarC();
-            actualizarC(id_viajero, estado);
+            actualizarC(id_viajero, estado, id_negocio, fecha);
             encolarS();
             borrarS();
-            actualizarS(id_viajero, estado);
+            actualizarS(id_viajero, estado, id_negocio, fecha);
+            finish();
         }
     }
     //Método para recuperar la base de datos de los usuarios de tipo hotel
@@ -222,13 +225,15 @@ public class reservas_servicio extends AppCompatActivity {
                         Date date=new Date(reserva.fecha);
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
                         String dateText = df2.format(date);
-                        String[] parts = new String[4];
+                        String[] parts = new String[6];
 
                         //Se crea un arreglo de tipo string que guarda los atributos pertinentes a la plantilla
                         parts[0] = reserva.Nombre;
                         parts[1] = reserva.correo;
                         parts[2] = dateText;
                         parts[3] = reserva.id_user;
+                        parts[4] = Long.toString(reserva.fecha);
+                        parts[5] = reserva.id_neg;
                         items.add(parts);
                     }
                 }
@@ -339,15 +344,15 @@ public class reservas_servicio extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void actualizarC(String id_user, String estado){
+    public void actualizarC(String id_user, String estado, String id_neg, String fecha){
 
         while(!queueC.isEmpty()){
             ReservaC_Class current = queueC.dequeue();
 
-            if (!current.id_user.equals(id_user)){
+            if (!current.id.equals(id_user+id_neg+fecha)){
                 guardar_reservaC(current);
             } else {
-                current.estado = estado.equals("true");
+                current.estado = estado;
                 guardar_reservaC(current);
             }
         }
@@ -355,15 +360,15 @@ public class reservas_servicio extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void actualizarS(String id_user, String estado){
+    public void actualizarS(String id_user, String estado, String id_neg, String fecha){
 
         while(!queueS.isEmpty()){
             ReservaS_Class current = queueS.dequeue();
 
-            if (!current.id_user.equals(id_user)){
+            if (!current.id.equals(id_user+id_neg+fecha)){
                 guardar_reservaS(current);
             } else {
-                current.estado = estado.equals("true");
+                current.estado = estado;
                 guardar_reservaS(current);
             }
         }

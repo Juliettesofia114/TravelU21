@@ -169,12 +169,18 @@ public class reservas_viajero extends AppCompatActivity {
                     if(reserva.id_user.equals(uid)){
                         //Se añade el nuevo objeto al árbol correpondiente
                         //basededatos.EnqueueC(reserva,reserva.fecha,reserva.id_user);
-                        Boolean est = reserva.estado;
+                        String est = reserva.estado;
                         String estado = "";
-                        if (est){
-                            estado = "Aceptada";
-                        } else {
-                            estado = "En espera";
+                        switch (est) {
+                            case "true":
+                                estado = "Aceptada";
+                                break;
+                            case "null":
+                                estado = "En espera";
+                                break;
+                            case "false":
+                                estado = "Rechazada";
+                                break;
                         }
                         Date date=new Date(reserva.fecha);
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");

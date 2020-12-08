@@ -34,6 +34,8 @@ public class vercuentaservicio extends AppCompatActivity {
     Queue<Viajero_class> queue = new Queue<>();
     private static final String FILE_NAME = "viajero.json";
     private static final String FILE_T = "archivo.json";
+    private static final String FILE_PC = "reservaC.json";
+    private static final String FILE_PS = "reservaS.json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,7 @@ public class vercuentaservicio extends AppCompatActivity {
         recupera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recuperarV();
+                borrar();
             }
         });
         actualiza.setOnClickListener(new View.OnClickListener() {
@@ -200,7 +202,7 @@ public class vercuentaservicio extends AppCompatActivity {
     public void borrar(){
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = openFileOutput(FILE_T, MODE_PRIVATE);
+            fileOutputStream = openFileOutput(FILE_PS, MODE_PRIVATE);
             fileOutputStream.write(0);
             Log.d("TAG1","Fichero salvado en: "+getFilesDir()+"/"+FILE_T);
 

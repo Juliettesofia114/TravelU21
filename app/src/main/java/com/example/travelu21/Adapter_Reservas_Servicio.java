@@ -37,7 +37,8 @@ public class Adapter_Reservas_Servicio extends RecyclerView.Adapter<Adapter_Rese
          final String corr = data.get(i)[1];
          final String fecha = data.get(i)[2];
          final String id_user = data.get(i)[3];
-
+         final String fechad = data.get(i)[4];
+         final String id_neg = data.get(i)[5];
          holder.nombre.setText(nom);
          holder.correo.setText(corr);
          holder.fecha.setText(fecha);
@@ -46,9 +47,12 @@ public class Adapter_Reservas_Servicio extends RecyclerView.Adapter<Adapter_Rese
              public void onClick(View v) {
                 holder.aceptar.setEnabled(false);
                 holder.rechazar.setEnabled(false);
-                Intent i = new Intent(mcontext,reservas_servicio.class);
+                Intent i = new Intent(mcontext,exitoreserva.class);
                 i.putExtra("id_viajero",id_user);
                 i.putExtra("estado","true");
+                i.putExtra("fecha",fechad);
+                i.putExtra("id_negocio",id_neg);
+
                 //Envía al usuario a la actividad donde se guardan las reservas
                  mcontext.startActivity(i);
              }
@@ -58,9 +62,11 @@ public class Adapter_Reservas_Servicio extends RecyclerView.Adapter<Adapter_Rese
              public void onClick(View v) {
                  holder.rechazar.setEnabled(false);
                  holder.aceptar.setEnabled(false);
-                 Intent i = new Intent(mcontext,reservas_servicio.class);
+                 Intent i = new Intent(mcontext,exitoreserva.class);
                  i.putExtra("id_viajero",id_user);
                  i.putExtra("estado","false");
+                 i.putExtra("fecha",fechad);
+                 i.putExtra("id_negocio",id_neg);
                  //Envía al usuario a la actividad donde se guardan las reservas
                  mcontext.startActivity(i);
 
