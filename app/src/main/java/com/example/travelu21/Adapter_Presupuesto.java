@@ -40,7 +40,7 @@ public class Adapter_Presupuesto extends RecyclerView.Adapter<Adapter_Presupuest
         final String fecha = data.get(i)[1];
         final String uuid = data.get(i)[2];
         final String total = data.get(i)[3];
-        final String personas = data.get(i)[4];
+        final String persona = data.get(i)[4];
         final String destino = data.get(i)[5];
         final String comida = data.get(i)[6];
         final String hotel = data.get(i)[7];
@@ -49,7 +49,7 @@ public class Adapter_Presupuesto extends RecyclerView.Adapter<Adapter_Presupuest
         holder.nombre.setText(nom);
         holder.fecha.setText(fecha);
         holder.total.setText("inversión total: "+total);
-        holder.personas.setText("número de personas: "+personas);
+        holder.personas.setText("número de personas: "+persona);
         holder.destino.setText("destino: "+destino);
         holder.comida.setText("inversión en comida: "+comida);
         holder.hotel.setText("Inversión en hoteles: "+hotel);
@@ -60,7 +60,7 @@ public class Adapter_Presupuesto extends RecyclerView.Adapter<Adapter_Presupuest
                 if (tipo.equals("restaurante")){
                     Intent i = new Intent(mcontext,busqueda_restaurante.class);
                     i.putExtra("total",total);
-                    i.putExtra("personas",personas);
+                    i.putExtra("personas",persona);
                     i.putExtra("destino", destino);
                     i.putExtra("comida",comida);
 
@@ -69,7 +69,7 @@ public class Adapter_Presupuesto extends RecyclerView.Adapter<Adapter_Presupuest
                 } else if(tipo.equals("hotel")) {
                     Intent i = new Intent(mcontext,busqueda_hotel.class);
                     i.putExtra("total",total);
-                    i.putExtra("personas",personas);
+                    i.putExtra("personas",persona);
                     i.putExtra("destino", destino);
                     i.putExtra("hotel",hotel);
 

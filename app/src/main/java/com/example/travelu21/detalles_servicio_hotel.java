@@ -47,7 +47,7 @@ public class detalles_servicio_hotel extends AppCompatActivity {
             maximoh.setText("Máximo de personas: "+max);
             prec.setText("Precio por noche: "+precio);
             wif.setText("Wifi: "+wifi);
-            pisc.setText("Piscina: Holi");
+            pisc.setText("Piscina: "+piscina);
             desay.setText("Desayuno: "+desayuno);
             correo.setText(corr);
 

@@ -91,11 +91,12 @@ public class crearpresupuesto extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         String uid = user.getUid();
-        Presupuesto_Class nuevo_presupuesto = new Presupuesto_Class(uid,fec,des,dir,per,com,ho,tip,dateString);
+        Presupuesto_Class nuevo_presupuesto = new Presupuesto_Class(uid,fec,des,dir,com,ho,tip,per,dateString);
         basededatos.ActualizarP(uid, nuevo_presupuesto);
         guardar_presupuesto(nuevo_presupuesto);
 
         //Envía al usuario al layout que permite ver los presupuestos guardados
+        Toast.makeText(crearpresupuesto.this, nuevo_presupuesto.per, Toast.LENGTH_SHORT).show();
         startActivity(new Intent(crearpresupuesto.this, verpresupuestos.class));
         finish();
 
