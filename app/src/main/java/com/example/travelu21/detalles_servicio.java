@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_servicio);
         Button reservar = findViewById(R.id.reservares);
-        Button favoritos = findViewById(R.id.favort);
         Bundle extras = getIntent().getExtras();
         final EditText fecha = findViewById(R.id.fecha);
         TextView nombre = findViewById(R.id.nombreres);

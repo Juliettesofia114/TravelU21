@@ -23,15 +23,8 @@ public class opciones_viajero extends AppCompatActivity {
         //Se instancian los objetos relacionádolos con la interfaz gráfica
         Button cerrar = findViewById(R.id.cerrar);
         Button datos = findViewById(R.id.verdato);
-        Button favoritos = findViewById(R.id.favoritos);
 
         //Métodos que le dan funcionalidad a los botones
-        favoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), favoritos.class));
-            }
-        });
         datos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

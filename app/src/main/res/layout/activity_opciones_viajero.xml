@@ -65,7 +65,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/favoritos" />
+        app:layout_constraintTop_toBottomOf="@+id/verdato" />
 
     <Button
         android:id="@+id/verdato"
@@ -76,22 +76,10 @@
         android:background="#ff8000"
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/ver_cuenta"
-        app:layout_constraintBottom_toTopOf="@+id/favoritos"
+        app:layout_constraintBottom_toTopOf="@+id/cerrar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-    <Button
-        android:id="@+id/favoritos"
-        android:layout_width="310dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
-        android:background="#ff8000"
-        android:fontFamily="sans-serif-smallcaps"
-        android:text="favoritos"
-        app:layout_constraintBottom_toTopOf="@+id/cerrar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verdato" />
 </androidx.constraintlayout.widget.ConstraintLayout>
